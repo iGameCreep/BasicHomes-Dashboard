@@ -3,14 +3,32 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { HomeComponent } from './pages/home/home/home.component';
+import { LoginComponent } from './pages/login/login/login.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HomeCardComponent } from './pages/home/home-card/home-card.component';
+import { ServerHomeListComponent } from './pages/home/server-home-list/server-home-list.component';
+import { PlayerHomeListComponent } from './pages/home/player-home-list/player-home-list.component';
+import { LandingComponent } from './pages/landing/landing.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FooterComponent,
+    NavbarComponent,
+    HomeComponent,
+    LoginComponent,
+    HomeCardComponent,
+    ServerHomeListComponent,
+    PlayerHomeListComponent,
+    LandingComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
