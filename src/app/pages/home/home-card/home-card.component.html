@@ -1,4 +1,4 @@
-<div class="home-card">
+<div class="card clearfix">
     <h1>{{ home.homename | titlecase }}</h1>
     <p><strong>ID: </strong>{{ home.homeid }}</p>
     <p><strong>Owner Username: </strong>{{ username }}</p>
@@ -7,4 +7,8 @@
     <p><strong>X: </strong>{{ home.x }}</p>
     <p><strong>Y: </strong>{{ home.y }}</p>
     <p><strong>Z: </strong>{{ home.z }}</p>
+    <br>
+    <a routerLink="/home/{{serverId}}/{{home.homeid}}" *ngIf="isInList()" style="float: left;">Access Home</a>
+    <a (click)="showConfirmation(home.homeid)" *ngIf="!isInList()" class="right" style="background-color: crimson;">Delete Home</a>
+    <br>
 </div>

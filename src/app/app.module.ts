@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './pages/home/home/home.component';
-import { LoginComponent } from './pages/login/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeCardComponent } from './pages/home/home-card/home-card.component';
 import { ServerHomeListComponent } from './pages/home/server-home-list/server-home-list.component';
 import { PlayerHomeListComponent } from './pages/home/player-home-list/player-home-list.component';
 import { LandingComponent } from './pages/landing/landing.component';
+import { MessageBarComponent } from './components/message-bar/message-bar.component';
+import { ServersComponent } from './pages/servers/servers.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +27,14 @@ import { LandingComponent } from './pages/landing/landing.component';
     ServerHomeListComponent,
     PlayerHomeListComponent,
     LandingComponent,
+    MessageBarComponent,
+    ServersComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

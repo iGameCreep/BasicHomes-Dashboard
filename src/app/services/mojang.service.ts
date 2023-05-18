@@ -6,13 +6,21 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root'
 })
 export class MojangService {
-  private mojangApiBaseUrl = 'https://api.mojang.com';
-
   constructor(private http: HttpClient) { }
 
   getUsernameByUUID(uuid: string): Observable<string> {
     return this.http
       .get<string>(`http://localhost:3000/mojang/username/${uuid}`)
+      .pipe(
+        map((data) => {
+          return data;
+        })
+      );
+  }
+
+  getUUIDByUsername(username: string): Observable<string> {
+    return this.http
+      .get<string>(`http://localhost:3000/mojang/uuid/${username}`)
       .pipe(
         map((data) => {
           return data;

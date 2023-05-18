@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+  
+.card h1 {
+    font-size: 40px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+  
+.card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.card button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  
+  &:hover {
+    background-color: #0069d9;
+  }
+}
+
+.card a {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+  text-decoration: none; /* Remove underline */
+
+  &:hover {
+    background-color: #0069d9;
+  }
+}
+
+.right {
+  float: right;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
