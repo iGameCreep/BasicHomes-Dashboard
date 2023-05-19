@@ -15,6 +15,7 @@ import { PlayerHomeListComponent } from './pages/home/player-home-list/player-ho
 import { LandingComponent } from './pages/landing/landing.component';
 import { MessageBarComponent } from './components/message-bar/message-bar.component';
 import { ServersComponent } from './pages/servers/servers.component';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ServersComponent } from './pages/servers/servers.component';
     LandingComponent,
     MessageBarComponent,
     ServersComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
