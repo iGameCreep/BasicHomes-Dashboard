@@ -1,0 +1,24 @@
+button {
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.primary {
+    background-color: #007bff;
+    &:hover {
+        background-color: #0069d9;
+    }
+    float: left;
+}
+
+.danger {
+    background-color: #FF0000;
+    &:hover {
+        background-color: #CC0000;
+    }
+    float: right;
+}

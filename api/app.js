@@ -135,6 +135,42 @@ app.get('/account/:accountId', async (req, res) => {
   }
 });
 
+app.post('/account/delete', async (req, res) => {
+  const accountId = req.body.accountId;
+
+  if (!accountId) return res.status(400).json({ error: "accountId not provided" });
+
+  const delAccSQL = `DELETE FROM accounts WHERE accountid = ${accountId}`;
+  const delAccServSQL = `DELETE FROM account_servers WHERE account_id = ${accountId}`;
+  const delSessionSQL = `DELETE FROM sessions WHERE user_id = ${accountId}`;
+  try {
+    await pool.query(delAccSQL);
+    await pool.query(delAccServSQL);
+    await pool.query(delSessionSQL);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
+
+app.post('/account/password', async (req, res) => {
+  const accountId = req.body.accountId;
+  const password = req.body.password;
+
+  if (!accountId) return res.status(400).json({ error: "accountId not provided" });
+  if (!password) return res.status(400).json({ error: "password not provided" }); 
+
+  const hashedPassword = hashPassword(password);
+
+  const sql = `UPDATE accounts SET password = '${hashedPassword}' WHERE accountid = ${accountId}`;
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
+
 app.post('/server/:uuid', async (req, res) => {
   const name = req.body.name;
   const accId = req.body.accId;
