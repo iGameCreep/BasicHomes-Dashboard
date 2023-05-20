@@ -1,13 +1,10 @@
 <div *ngIf="loadingComplete">
-    <div class="card">
-        <h1>Your informations</h1>
-        <p><strong>Account ID:</strong> {{ userInfos.accountId }}</p>
-        <p><strong>Minecraft Username:</strong> {{ userInfos.username }}</p>
-        <p><strong>Minecraft UUID:</strong> {{ userInfos.userId }}</p>
-        <br>
-    </div>
-    <div class="clearfix">
+    <div class="card clearfix">
         <h1>Your account</h1>
+        <p><strong>Account ID:</strong> {{ userInfos.accountID }}</p>
+        <p><strong>Minecraft Username:</strong> {{ userInfos.username }}</p>
+        <p><strong>Minecraft UUID:</strong> {{ userInfos.userID }}</p>
+        <br>
         <button (click)="changePassword()" class="primary">Change Password</button>
         <button (click)="deleteAccount()" class="danger">Delete Account</button>
     </div>

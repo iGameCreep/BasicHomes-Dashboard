@@ -31,7 +31,7 @@ export class AccountComponent {
   deleteAccount(): void {
     if (confirm("Are you sure you want to delete your account?")) {
       this.sessionService.logout();
-      this.databaseService.deleteAccount(this.userInfos.accountId);
+      this.databaseService.deleteAccount(this.userInfos.accountID);
       this.router.navigateByUrl('');
       window.location.reload();
     }
@@ -47,7 +47,7 @@ export class AccountComponent {
     }
 
     if (regex.test(password)) {
-      this.databaseService.changeAccountPassword(this.userInfos.accountId, password);
+      this.databaseService.changeAccountPassword(this.userInfos.accountID, password);
       this.messageService.setSuccessMessage("Successfully changed your password !");
     } else {
       this.messageService.setErrorMessage("Password must be 1 to 20 characters long and can only contain letters, digits and the following special characters: .,?!@#$%^&*()-+=<>:;\"'{}[]|\\/");

@@ -132,11 +132,11 @@ app.get('/account/:accountId', async (req, res) => {
 app.post('/account/delete', async (req, res) => {
   const accountId = req.body.accountId;
 
-  if (!accountId) return res.status(400).json({ error: "accountId not provided" });
+  if (!accountId) return res.status(400).json({ error: "account ID not provided" });
 
-  const delAccSQL = `DELETE FROM accounts WHERE accountid = ${accountId}`;
-  const delAccServSQL = `DELETE FROM account_servers WHERE account_id = ${accountId}`;
-  const delSessionSQL = `DELETE FROM sessions WHERE user_id = ${accountId}`;
+  const delAccSQL = `DELETE FROM accounts WHERE accountID = ${accountId}`;
+  const delAccServSQL = `DELETE FROM account_servers WHERE accountID = ${accountId}`;
+  const delSessionSQL = `DELETE FROM sessions WHERE accountID = ${accountId}`;
   try {
     await pool.query(delAccSQL);
     await pool.query(delAccServSQL);
