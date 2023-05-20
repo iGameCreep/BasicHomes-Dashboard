@@ -89,4 +89,19 @@ export class DatabaseService {
         }
         return this.http.post<SessionDestroy>('${this.api_endpoint}/api/session/destroy', body);
     }
+
+    deleteAccount(accountId: number): void {
+        const body = {
+            accountId: accountId
+        }   
+        this.http.post<void>(`${this.api_endpoint}/account/delete`, body).subscribe((result) => {return});
+    }
+
+    changeAccountPassword(accountId: number, password: string): void {
+        const body = {
+            accountId: accountId,
+            password: password
+        }
+        this.http.post<void>(`${this.api_endpoint}/account/password`, body).subscribe((result) => {return});
+    }
 }
