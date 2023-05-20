@@ -1,11 +1,11 @@
 export interface LoginResponse {
     success: boolean;
-    sessionId: string;
+    sessionID: string;
 }
 
 export interface SessionInformationsResponse {
     available: boolean;
-    accountId: number;
+    accountID: number;
 }
 
 export interface SessionDestroy {
@@ -13,15 +13,15 @@ export interface SessionDestroy {
 }
 
 export interface UserInformations {
-    accountId: number;
-    userId: string;
+    accountID: number;
+    userID: string;
     servers: UserServer[];
     username?: string;
 }
 
 export interface UserServer {
-    server_id: string;
-    server_name: string;
+    serverID: string;
+    serverName: string;
     rank: 'admin' | 'user';
 }
 

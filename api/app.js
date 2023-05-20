@@ -100,14 +100,8 @@ app.get('/mojang/uuid/:username', async (req, res) => {
 // Accounts
 app.get('/account/:accountId', async (req, res) => {
   const accountId = req.params.accountId;
-  const query = {
-    text: 'SELECT * FROM accounts WHERE accountId = $1',
-    values: [accountId],
-  };
-  const servQuery = {
-    text: 'SELECT * FROM account_servers WHERE account_id = $1',
-    values: [accountId]
-  }
+  const query = `SELECT * FROM accounts WHERE accountID = ${accountId}`;
+  const servQuery = `SELECT * FROM account_servers WHERE accountID = ${accountId}`
   try {
     const result = await pool.query(query);
     const serverResult = await pool.query(servQuery);
@@ -125,10 +119,10 @@ app.get('/account/:accountId', async (req, res) => {
     const user = result.rows[0];
     const servs = [];
     serverResult.rows.forEach(row => {
-      servs.push({ server_id: row.server_id, server_name: row.server_name, rank: row.rank })
+      servs.push({ serverID: row.serverid, serverName: row.servername, rank: row.rank })
     });
 
-    res.json({ accountId: accountId, userId: user.userid, servers: servs });
+    res.json({ accountID: accountId, userID: user.userid, servers: servs });
   } catch (error) {
     console.error('Error getting user:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -139,7 +133,7 @@ app.post('/server/:uuid', async (req, res) => {
   const name = req.body.name;
   const accId = req.body.accId;
   const uuid = req.params.uuid;
-  const query = `UPDATE account_servers SET server_name = '${name}' WHERE server_id = '${uuid}' AND account_id = ${accId}`;
+  const query = `UPDATE account_servers SET serverName = '${name}' WHERE serverID = '${uuid}' AND accountID = ${accId}`;
 
   try {
     await pool.query(query);
@@ -153,20 +147,20 @@ app.post('/server/:uuid', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   const accountId = Number(req.body.accountId);
   const password = req.body.password;
-  pool.query('SELECT password FROM accounts WHERE accountId = $1', [accountId], async (err, result) => {
+  pool.query('SELECT password FROM accounts WHERE accountID = $1', [accountId], async (err, result) => {
     if (err) {
       console.error(err);
       res.sendStatus(500);
     } else {
       if (result.rows.length === 0) {
-        res.json({ success: false, message: 'Invalid accountId' });
+        res.json({ success: false, message: 'Invalid accountID' });
       } else {
         const storedHash = result.rows[0].password;
         const inputHash = hashPassword(password);
         if (storedHash === inputHash) {
-          const sessionId = generateSessionId();
-          await pool.query('INSERT INTO sessions (token, user_id) VALUES ($1, $2)', [sessionId, accountId]);
-          res.status(200).json({ success: true, sessionId, userId: accountId });
+          const sessionID = generateSessionId();
+          await pool.query('INSERT INTO sessions (token, accountID) VALUES ($1, $2)', [sessionID, accountId]);
+          res.status(200).json({ success: true, sessionID, userID: accountId });
         } else {
           res.json({ success: false, message: 'Incorrect password' });
         }
@@ -196,14 +190,14 @@ app.post('/api/session', (req, res) => {
 
     const session = result.rows[0];
 
-    if (!session || new Date(session.expire_at) < new Date()) {
-      res.json({ available: false, accountId: (session ? session.user_id : -1) });
+    if (!session || new Date(session.expireat) < new Date()) {
+      res.json({ available: false, accountID: (session ? session.accountid : -1) });
       return;
     }
 
     // If the session is still available, return the corresponding accountId with a JSON response
-    const accountId = session.user_id;
-    res.json({ available: true, accountId: accountId });
+    const accountId = session.accountid;
+    res.json({ available: true, accountID: accountId });
   });
 });
 
@@ -218,28 +212,18 @@ app.post('/api/session/destroy', (req, res) => {
   // Query the session table in the database to check if the session exists
   const query = `SELECT * FROM sessions WHERE token = '${sessionId}'`;
   pool.query(query, async (err, result) => {
-    if (err) {
-      res.status(500).send('Error checking session');
-      return;
+    try {
+      await pool.query(`DELETE FROM sessions WHERE token = '${sessionId}'`);
+      res.json({ success: true });
+    } catch (err) {
+      res.status(500).json({ success: false, error: "Error deleting session" });
     }
-
-    // If the session is not found or has expired, return a JSON response indicating it is unavailable
-
-    const session = result.rows[0];
-
-    if (!session) {
-      res.status(400).send("Invalid session");
-      return;
-    }
-
-    await pool.query(`DELETE FROM sessions WHERE token = '${sessionId}'`);
-    res.json({ success: true });
   });
 })
 
 function removeExpiredSessions() {
   const currentTime = new Date().getTime();
-  const query = `DELETE FROM sessions WHERE expire_at <= to_timestamp(${currentTime / 1000})`;
+  const query = `DELETE FROM sessions WHERE expireAt <= to_timestamp(${currentTime / 1000})`;
   pool.query(query, (err, result) => {
     if (err) {
       console.error('Error removing expired sessions', err);

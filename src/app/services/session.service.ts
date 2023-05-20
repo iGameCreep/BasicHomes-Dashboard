@@ -15,7 +15,7 @@ export class SessionService {
 
   login(loginResponse: LoginResponse): void {
     if (loginResponse && loginResponse.success) {
-      localStorage.setItem(this.SESSION_STORAGE_KEY, JSON.stringify({ id: loginResponse.sessionId }));
+      localStorage.setItem(this.SESSION_STORAGE_KEY, JSON.stringify({ id: loginResponse.sessionID }));
     }
   }
 
@@ -32,7 +32,7 @@ export class SessionService {
 
   getUserId(): Observable<number> {
     return this.databaseService.getSessionInfoFromSession(this.getSessionId()).pipe(
-      map((result) => result.accountId)
+      map((result) => result.accountID)
     );
   }
 
@@ -62,11 +62,11 @@ export class SessionService {
             switchMap((accId) => {
               return this.databaseService.getAccountInfoById(accId).pipe(
                 switchMap((infos) => {
-                  return this.mojangService.getUsernameByUUID(infos.userId).pipe(
+                  return this.mojangService.getUsernameByUUID(infos.userID).pipe(
                     map((username) => {
                       const userInfos: UserInformations = {
-                        accountId: accId,
-                        userId: infos.userId,
+                        accountID: accId,
+                        userID: infos.userID,
                         servers: infos.servers,
                         username: username
                       };

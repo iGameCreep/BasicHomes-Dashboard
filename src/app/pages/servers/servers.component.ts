@@ -23,7 +23,7 @@ export class ServersComponent {
               private router: Router) {}
 
   isAdmin(serverId: string): boolean {
-    const server = this.userInfos.servers.find(s => s.server_id === serverId);
+    const server = this.userInfos.servers.find(s => s.serverID === serverId);
     return server ? server.rank === "admin" : false;
   }
 
@@ -32,7 +32,7 @@ export class ServersComponent {
   }
 
   userHomesRedirect(serverId: string): void {
-    this.router.navigateByUrl(`/homes/${serverId}/${this.userInfos.userId}`);
+    this.router.navigateByUrl(`/homes/${serverId}/${this.userInfos.userID}`);
   }
 
   userHomesByUUID(serverId: string): void {
@@ -52,12 +52,12 @@ export class ServersComponent {
   }
 
   renameServer(server: UserServer): void {
-    const name = window.prompt(`New name for server ${server.server_name}: (1 to 20 characters, special characters other than - and _ not authorized !)`);
+    const name = window.prompt(`New name for server ${server.serverName}: (1 to 20 characters, special characters other than - and _ not authorized !)`);
     if (name === null) return;
     const regex = /^[a-zA-Z0-9-_]{1,20}$/;
     if (regex.test(name)) {
-      this.databaseService.setServerName(server.server_id, name, this.userInfos.accountId);
-      this.messageService.setSuccessMessage(`Successfully renamed server ${server.server_name} into ${name} !`, 2000);
+      this.databaseService.setServerName(server.serverID, name, this.userInfos.accountID);
+      this.messageService.setSuccessMessage(`Successfully renamed server ${server.serverName} into ${name} !`, 2000);
       setTimeout(() => {
         window.location.reload();
       }, 2000)

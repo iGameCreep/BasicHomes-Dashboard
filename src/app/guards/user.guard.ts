@@ -17,13 +17,13 @@ export class UserGuard implements CanActivate {
       switchMap((id) => {
         return this.databaseService.getAccountInfoById(id).pipe(
           map((infos) => {
-            const server = infos.servers.find(s => s.server_id === route.params['serverId']);
+            const server = infos.servers.find(s => s.serverID === route.params['serverId']);
             if (!server) return of(false);
             if (server.rank === "admin") {
               return of(true);
             } else {
               const userId = route.params['userId'];
-              return infos.userId = userId;
+              return infos.userID = userId;
             }
           })
         );

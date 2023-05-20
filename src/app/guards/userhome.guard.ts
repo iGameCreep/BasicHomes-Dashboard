@@ -18,14 +18,14 @@ export class UserHomeGuard implements CanActivate {
             switchMap((id) => {
                 return this.databaseService.getAccountInfoById(id).pipe(
                     switchMap((infos) => {
-                        const server = infos.servers.find(s => s.server_id === serverId);
+                        const server = infos.servers.find(s => s.serverID === serverId);
                         if (!server) return of(false);
                         if (server.rank === "admin") {
                             return of(true);
                         } else {
                             return this.databaseService.getServerHomeById(serverId, homeId).pipe(
                                 map((homeData) => {
-                                    return homeData.uuid === infos.userId;
+                                    return homeData.uuid === infos.userID;
                                 })
                             );
                         }

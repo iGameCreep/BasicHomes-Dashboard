@@ -5,13 +5,13 @@
     <h1>Your servers</h1>
     <div *ngFor="let server of userInfos.servers">
         <div class="card clearfix">
-            <h1>{{ server.server_name }}</h1>
-            <p><strong>Server Generated ID:</strong> {{ server.server_id }}</p>
+            <h1>{{ server.serverName }}</h1>
+            <p><strong>Server Generated ID:</strong> {{ server.serverID }}</p>
             <br>
-            <a routerLink="/homes/{{server.server_id}}" *ngIf="isAdmin(server.server_id)">Manage My Server Homes</a>
-            <a routerLink="/homes/{{server.server_id}}/{{userInfos.userId}}">Manage My Homes</a>
-            <button (click)="userHomesByUsername(server.server_id)" *ngIf="isAdmin(server.server_id)">Player Homes (Username)</button>
-            <button (click)="userHomesByUUID(server.server_id)" *ngIf="isAdmin(server.server_id)">Player Homes (UUID)</button>
+            <a routerLink="/homes/{{server.serverID}}" *ngIf="isAdmin(server.serverID)">Manage My Server Homes</a>
+            <a routerLink="/homes/{{server.serverID}}/{{userInfos.userID}}">Manage My Homes</a>
+            <button (click)="userHomesByUsername(server.serverID)" *ngIf="isAdmin(server.serverID)">Player Homes (Username)</button>
+            <button (click)="userHomesByUUID(server.serverID)" *ngIf="isAdmin(server.serverID)">Player Homes (UUID)</button>
             <button (click)="renameServer(server)" class="right">Rename Server</button>
         </div>
     </div>

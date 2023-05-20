@@ -18,7 +18,7 @@ export class AdminGuard implements CanActivate {
       switchMap((id) => {
         return this.databaseService.getAccountInfoById(id).pipe(
           map((infos) => {
-            const server = infos.servers.find(s => s.server_id === route.params['serverId']);
+            const server = infos.servers.find(s => s.serverID === route.params['serverId']);
             if (!server) return of(false);
             return of(server.rank === "admin");
           }),
