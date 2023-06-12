@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment.local';
     providedIn: 'root'
 })
 export class DatabaseService {
-    api_endpoint: string = `${environment.API_DOMAIN}:${environment.API_PORT}`;
+    api_endpoint: string = environment.API_DOMAIN + environment.API_PORT ? ":" + environment.API_PORT : "";
 
     constructor(private http: HttpClient) { }
 
