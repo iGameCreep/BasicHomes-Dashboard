@@ -71,8 +71,7 @@ app.get('/mojang/username/:uuid', async (req, res) => {
 
         const response = await fetch(url);
         if (!response || !response.body) return;
-        const body = response.body;
-        res.json(JSON.parse(body._readableState.buffer.head.data.toString('ascii')).name)
+        res.json(await response.json().name)
     }
     catch (error) {
         console.error(error);
@@ -88,8 +87,7 @@ app.get('/mojang/uuid/:username', async (req, res) => {
 
       const response = await fetch(url);
       if (!response || !response.body) return;
-      const body = response.body;
-      res.json(JSON.parse(body._readableState.buffer.head.data.toString('ascii')).id)
+      res.json(await response.json().id)
   }
   catch (error) {
       console.error(error);
