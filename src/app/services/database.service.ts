@@ -4,7 +4,7 @@ import { Home } from "../models/home.model";
 import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { LoginResponse, SessionDestroy, SessionInformationsResponse, UserInformations } from '../types';
-import { environment } from '../../environments/environment.local';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
