@@ -10,7 +10,8 @@ router.get('/mojang/username/:uuid', async (req, res) => {
 
         const response = await fetch(url);
         if (!response || !response.body) return;
-        res.json(await response.json().name)
+        const data = await response.json();
+        res.json(data.name)
     }
     catch (error) {
         console.error(error);
@@ -26,7 +27,8 @@ router.get('/mojang/uuid/:username', async (req, res) => {
 
       const response = await fetch(url);
       if (!response || !response.body) return;
-      res.json(await response.json().id)
+      const data = await response.json();
+      res.json(data.id)
   }
   catch (error) {
       console.error(error);
