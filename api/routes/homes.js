@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db');
+const headerMiddleware = require('../utils/headerMiddleware');
 
-router.get('/homes/:serverId', async (req, res) => {
+router.get('/homes', headerMiddleware, async (req, res) => {
     try {
-        const { rows } = await pool.query(`SELECT * FROM homes_${req.params.serverId.replaceAll("-", "")}`);
+        const { rows } = await req.pool.query(`SELECT * FROM homes`);
         res.json(rows);
     } 
     catch (error) {
@@ -13,9 +13,9 @@ router.get('/homes/:serverId', async (req, res) => {
     }
 });
 
-router.get('/homes/:serverId/:userId', async (req, res) => {
+router.get('/homes/:userId', headerMiddleware, async (req, res) => {
     try {
-        const { rows } = await pool.query(`SELECT * FROM homes_${req.params.serverId} WHERE uuid = '${req.params.userId}'`);
+        const { rows } = await req.pool.query(`SELECT * FROM homes WHERE uuid = '${req.params.userId}'`);
         res.json(rows);
     } 
     catch (error) {
@@ -24,12 +24,11 @@ router.get('/homes/:serverId/:userId', async (req, res) => {
     }
 });
 
-router.get('/home/:serverId/:homeId/delete', async (req, res) => {
-  const serverId = req.params.serverId;
+router.get('/home/:homeId/delete', headerMiddleware, async (req, res) => {
   const homeId = req.params.homeId;
   
   try {
-    pool.query(`DELETE FROM homes_${serverId.replaceAll('-', '')} WHERE homeid = '${homeId}'`);
+    req.pool.query(`DELETE FROM homes WHERE homeid = '${homeId}'`);
   }
   catch (error) {
     console.error(error);

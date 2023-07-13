@@ -11,7 +11,7 @@ const pool = new Pool({
     port: 5432, 
 });
 
-module.exports = pool;
+module.exports.defaultDb = pool;
 
 function getDbFromHash(hash) {
     const data = decryptObject(hash);

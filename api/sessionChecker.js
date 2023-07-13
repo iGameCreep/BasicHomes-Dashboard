@@ -1,4 +1,4 @@
-const pool = require('./db');
+const pool = require('./db').defaultDb;
 
 function removeExpiredSessions() {
   const currentTime = new Date().getTime();

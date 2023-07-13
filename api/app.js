@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
+const { all } = require('./routes/accounts');
 dotenv.config();
 
 require('./sessionChecker'); // Remove old sessions from DB
