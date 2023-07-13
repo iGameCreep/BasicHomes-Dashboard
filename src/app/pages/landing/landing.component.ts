@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DbService } from 'src/app/services/db.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UserInformations } from 'src/app/types';
 
@@ -14,7 +15,9 @@ export class LandingComponent implements OnInit {
   userInfos!: UserInformations;
 
   constructor(private sessionService: SessionService,
-              private router: Router) {}
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private dbService: DbService) {}
 
   adminOnServers(): number {
     return this.userInfos.servers.filter(s => s.rank === "admin").length;
@@ -23,16 +26,16 @@ export class LandingComponent implements OnInit {
   serversRedirect(): void {
     this.router.navigateByUrl(`/servers`);
   }
-
+  
   ngOnInit(): void {
-    this.sessionService.getAccountInfoIfAvailable().subscribe(
-      (result) => {
-        this.loggedIn = result.available;
-        if (result.available) {
-          if (result.userInfos) this.userInfos = result.userInfos;
-          this.loadingComplete = true;
-        }
+    const db = decodeURIComponent(this.activatedRoute.snapshot.queryParams['db']);
+    if (db) this.dbService.add(db);
+
+    this.sessionService.getAccountInfoIfAvailable().subscribe((result) => { 
+      this.loggedIn = result.available; 
+      if (result.available) { 
+        if (result.userInfos) this.userInfos = result.userInfos; this.loadingComplete = true; 
       }
-    )
+    })
   }
 }
