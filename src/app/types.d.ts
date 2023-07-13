@@ -1,3 +1,5 @@
+import { Home } from "./models/home.model";
+
 export interface LoginResponse {
     success: boolean;
     sessionID: string;
@@ -15,7 +17,6 @@ export interface SessionDestroy {
 export interface UserInformations {
     accountID: number;
     userID: string;
-    servers: UserServer[];
     username?: string;
 }
 

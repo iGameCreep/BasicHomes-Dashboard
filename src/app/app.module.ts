@@ -14,7 +14,6 @@ import { ServerHomeListComponent } from './pages/home/server-home-list/server-ho
 import { PlayerHomeListComponent } from './pages/home/player-home-list/player-home-list.component';
 import { LandingComponent } from './pages/landing/landing.component';
 import { MessageBarComponent } from './components/message-bar/message-bar.component';
-import { ServersComponent } from './pages/servers/servers.component';
 import { AccountComponent } from './pages/account/account.component';
 import { DatabaseComponent } from './pages/database/database.component';
 
@@ -30,7 +29,6 @@ import { DatabaseComponent } from './pages/database/database.component';
     PlayerHomeListComponent,
     LandingComponent,
     MessageBarComponent,
-    ServersComponent,
     AccountComponent,
     DatabaseComponent,
   ],

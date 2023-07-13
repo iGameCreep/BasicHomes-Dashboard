@@ -15,13 +15,12 @@
             <p><strong>Minecraft UUID:</strong> {{ userInfos.userID }}</p>
             <br>
         </div>
-        <h1>Your stats</h1>
-            <div class="card">
-                <h1>Server Stats</h1>
-                <p><strong>Servers:</strong> {{ userInfos.servers.length }}</p>
-                <p><strong>Admin On Servers:</strong> {{ adminOnServers() }}</p>
-                <br>
-                <button (click)="serversRedirect()">Manage My Servers</button>
-            </div>
+        <div class="card">
+            <h1>Your Stats</h1>
+            <p><strong>Homes:</strong> {{ homeCount }}</p>
+            <p><strong>Admin:</strong> </p>
+            <br>
+            <button routerLink="homes">Manage My Homes</button>
+        </div>
     </div>
 </div>

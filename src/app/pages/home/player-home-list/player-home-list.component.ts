@@ -15,9 +15,8 @@ export class PlayerHomeListComponent {
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const serverId = this.route.snapshot.params['serverId'];
     const userId = this.route.snapshot.params['userId'];
-    this.databaseService.getAllPlayerHomes(serverId, userId).subscribe((homes) => {
+    this.databaseService.getAllPlayerHomes(userId).subscribe((homes) => {
       this.homeList = homes;
     });
   }

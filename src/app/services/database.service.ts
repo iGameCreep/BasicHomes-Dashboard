@@ -20,9 +20,8 @@ export class DatabaseService {
         db: this.dbService.getKey()
     }
 
-    getAllServerHomes(serverId: string): Observable<Home[]> {
-        serverId = serverId.replaceAll("-", "");
-        return this.http.get<Home[]>(`${this.api_endpoint}/homes/${serverId}`, {headers: this.headers}).pipe(
+    getAllHomes(): Observable<Home[]> {
+        return this.http.get<Home[]>(`${this.api_endpoint}/homes`, {headers: this.headers}).pipe(
             map(response => {
                 return response.map(data => {
                     const home = new Home();
@@ -39,14 +38,14 @@ export class DatabaseService {
         )
     }
 
-    getAllPlayerHomes(serverId: string, userId: string): Observable<Home[]> {
-        return this.getAllServerHomes(serverId).pipe(
+    getAllPlayerHomes(userId: string): Observable<Home[]> {
+        return this.getAllHomes().pipe(
           map(homes => homes.filter(home => home.uuid.replaceAll('-', '') === userId.replaceAll('-', '')))
         );
     }
 
-    getServerHomeById(serverId: string, homeId: number): Observable<Home> {
-        return this.getAllServerHomes(serverId).pipe(
+    getServerHomeById(homeId: number): Observable<Home> {
+        return this.getAllHomes().pipe(
             map(homes => {
                 const home = homes.find(h => Number(h.homeid) === Number(homeId));
                 if (home) {
@@ -58,20 +57,12 @@ export class DatabaseService {
         );
     }
 
-    deleteHomeById(serverId: string, homeId: number): void {
-        this.http.get(`${this.api_endpoint}/home/${serverId}/${homeId}/delete`, {headers: this.headers}).subscribe((result) => {return});
+    deleteHomeById(homeId: number): void {
+        this.http.get(`${this.api_endpoint}/home/${homeId}/delete`, {headers: this.headers}).subscribe((result) => {return});
     }
 
     getAccountInfoById(accountId: number): Observable<UserInformations> {
         return this.http.get<UserInformations>(`${this.api_endpoint}/account/${accountId}`, {headers: this.headers});
-    }
-
-    setServerName(uuid: string, name: string, accId: number): void {
-        const body = {
-            name: name,
-            accId: accId
-        };
-        this.http.post<void>(`${this.api_endpoint}/server/${uuid}`, body, {headers: this.headers}).subscribe((result) => {return}) ;
     }
 
     login(userId: number, password: string): Observable<LoginResponse> {
@@ -94,7 +85,7 @@ export class DatabaseService {
         const body = {
             sessionId: session
         }
-        return this.http.post<SessionDestroy>('${this.api_endpoint}/api/session/destroy', body, {headers: this.headers});
+        return this.http.post<SessionDestroy>(`${this.api_endpoint}/api/session/destroy`, body, {headers: this.headers});
     }
 
     deleteAccount(accountId: number): void {
