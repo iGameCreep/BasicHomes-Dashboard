@@ -1,5 +1,3 @@
-import { Home } from "./models/home.model";
-
 export interface LoginResponse {
     success: boolean;
     sessionID: string;
@@ -18,14 +16,8 @@ export interface UserInformations {
     accountID: number;
     userID: string;
     username?: string;
-}
-
-export interface UserServer {
-    serverID: string;
-    serverName: string;
     rank: 'admin' | 'user';
 }
-
 export interface AccountInfoAvailable {
     available: boolean;
     userInfos?: UserInformations;

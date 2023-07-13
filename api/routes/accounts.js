@@ -16,7 +16,7 @@ router.get('/account/:accountId', headerMiddleware, async (req, res) => {
   
       const user = result.rows[0];
   
-      res.json({ accountID: accountId, userID: user.userid });
+      res.json({ accountID: accountId, userID: user.userid, rank: user.rank });
     } catch (error) {
       console.error('Error getting user:', error);
       res.status(500).json({ error: 'Internal server error' });

@@ -67,7 +67,8 @@ export class SessionService {
                       const userInfos: UserInformations = {
                         accountID: accId,
                         userID: infos.userID,
-                        username: username
+                        username: username,
+                        rank: infos.rank
                       };
                       return { available, userInfos };
                     })

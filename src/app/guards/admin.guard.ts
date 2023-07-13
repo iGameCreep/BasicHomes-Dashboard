@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { CanActivate } from '@angular/router';
 import { SessionService } from '../services/session.service';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
@@ -10,17 +10,14 @@ import { DatabaseService } from '../services/database.service';
 export class AdminGuard implements CanActivate {
 
   constructor(private sessionService: SessionService,
-              private databaseService: DatabaseService,
-              private activatedRoute: ActivatedRoute) {}
+              private databaseService: DatabaseService) {}
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+  canActivate(): Observable<boolean> {
     return this.sessionService.getUserId().pipe(
       switchMap((id) => {
         return this.databaseService.getAccountInfoById(id).pipe(
           map((infos) => {
-            const server = infos.servers.find(s => s.serverID === route.params['serverId']);
-            if (!server) return of(false);
-            return of(server.rank === "admin");
+            return of(infos.rank === "admin");
           }),
           switchMap((result) => {
             return result;
