@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { hashPassword, generateSessionId } = require('../utils/utils');
-const { getDbFromHash } = require('../db');
 const headerMiddleware = require('../utils/headerMiddleware');
 
 router.post('/api/login', headerMiddleware, async (req, res) => {
@@ -21,13 +20,13 @@ router.post('/api/login', headerMiddleware, async (req, res) => {
           const sessionID = generateSessionId();
           await req.pool.query('INSERT INTO sessions (token, accountID) VALUES ($1, $2)', [sessionID, accountId]);
           res.status(200).json({ success: true, sessionID, userID: accountId });
+          req.pool.end();
         } else {
           res.json({ success: false, message: 'Incorrect password' });
         }
       }
     }
   });
-  req.pool.end();
 });
 
 router.post('/api/session', headerMiddleware, (req, res) => {
