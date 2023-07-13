@@ -21,6 +21,7 @@ router.get('/account/:accountId', headerMiddleware, async (req, res) => {
       console.error('Error getting user:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
+    req.pool.end();
 });
   
 router.post('/account/delete', headerMiddleware, async (req, res) => {
@@ -37,6 +38,7 @@ router.post('/account/delete', headerMiddleware, async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
     }
+    req.pool.end();
 });
   
 router.post('/account/password', headerMiddleware, async (req, res) => {
@@ -55,6 +57,7 @@ router.post('/account/password', headerMiddleware, async (req, res) => {
         console.error(err);
         res.status(500).json({ error: "Internal server error" });
     }
+    req.pool.end();
 });
 
 module.exports = router;

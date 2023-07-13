@@ -11,6 +11,7 @@ router.get('/homes', headerMiddleware, async (req, res) => {
         console.error(error);
         res.status(500).send('Internal server error');
     }
+    req.pool.end();
 });
 
 router.get('/homes/:userId', headerMiddleware, async (req, res) => {
@@ -22,6 +23,7 @@ router.get('/homes/:userId', headerMiddleware, async (req, res) => {
         console.error(error);
         res.status(500).send('Internal server error');
     }
+    req.pool.end();
 });
 
 router.get('/home/:homeId/delete', headerMiddleware, async (req, res) => {
@@ -34,6 +36,7 @@ router.get('/home/:homeId/delete', headerMiddleware, async (req, res) => {
     console.error(error);
     res.status(500).send('Internal server error');
   }
+  req.pool.end();
 });
 
 module.exports = router;

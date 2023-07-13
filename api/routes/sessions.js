@@ -27,6 +27,7 @@ router.post('/api/login', headerMiddleware, async (req, res) => {
       }
     }
   });
+  req.pool.end();
 });
 
 router.post('/api/session', headerMiddleware, (req, res) => {
@@ -58,6 +59,7 @@ router.post('/api/session', headerMiddleware, (req, res) => {
     const accountId = session.accountid;
     res.json({ available: true, accountID: accountId });
   });
+  req.pool.end();
 });
 
 router.post('/api/session/destroy', (req, res) => {
@@ -78,6 +80,7 @@ router.post('/api/session/destroy', (req, res) => {
       res.status(500).json({ success: false, error: "Error deleting session" });
     }
   });
+  req.pool.end();
 });
 
 module.exports = router;
