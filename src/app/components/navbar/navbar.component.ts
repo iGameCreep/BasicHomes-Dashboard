@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -8,12 +8,18 @@ import { SessionService } from 'src/app/services/session.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   constructor(private router: Router,
               private sessionService: SessionService,
               private messageService: MessageService) { }
 
-  username!: string;
+  userId!: string;
+
+  ngOnInit(): void {
+    this.sessionService.getAccountInfoIfAvailable().subscribe((data) => {
+      if (data.available && data.userInfos) this.userId = data.userInfos?.userID;
+    });
+  }
 
   isActive(url: string): boolean {
     return this.getCurrentURL() === url;
