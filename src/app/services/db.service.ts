@@ -12,7 +12,13 @@ export class DbService {
     localStorage.setItem(this.DB_STORAGE_KEY, key);
   }
 
-  isLoggedIn(): boolean {
+  getKey(): string {
+    const key = localStorage.getItem(this.DB_STORAGE_KEY);
+    if (!key) throw new Error("No DB registered")
+    return key;
+  }
+
+  isRegistered(): boolean {
     return !!localStorage.getItem(this.DB_STORAGE_KEY);
   }
 

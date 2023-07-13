@@ -9,11 +9,11 @@ import { environment } from '../../environments/environment';
 export class MojangService {
   constructor(private http: HttpClient) { }
 
-  api_endpoint: string = environment.API_DOMAIN + environment.API_PORT ? ":" + environment.API_PORT : "";
+  api_endpoint: string = environment.API_DOMAIN + ':' + environment.API_PORT;
 
   getUsernameByUUID(uuid: string): Observable<string> {
     return this.http
-      .get<string>(`/mojang/username/${uuid}`)
+      .get<string>(`${this.api_endpoint}/mojang/username/${uuid}`)
       .pipe(
         map((data) => {
           return data;
@@ -23,7 +23,7 @@ export class MojangService {
 
   getUUIDByUsername(username: string): Observable<string> {
     return this.http
-      .get<string>(`/mojang/uuid/${username}`)
+      .get<string>(`${this.api_endpoint}/mojang/uuid/${username}`)
       .pipe(
         map((data) => {
           return data;
