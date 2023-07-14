@@ -45,7 +45,7 @@ export class LandingComponent implements OnInit {
   
   ngOnInit(): void {
     const db = decodeURIComponent(this.activatedRoute.snapshot.queryParams['db']);
-    if (db && db !== 'undefined') this.dbService.add(db);
+    this.dbService.load(db);
 
     this.sessionService.getAccountInfoIfAvailable().subscribe((result) => { 
       this.loggedIn = result.available; 

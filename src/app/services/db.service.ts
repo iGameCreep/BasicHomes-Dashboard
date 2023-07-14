@@ -8,7 +8,14 @@ export class DbService {
   private readonly DB_STORAGE_KEY = 'db';
   private readonly KEY: string = 'BasicHomes';
 
-  add(key: string): void {
+  load(key: string): void {
+    if (this.isRegistered()) return;
+    console.log(key === 'undefined')
+    if (key === 'undefined') this.setKey('default');
+    else this.setKey(key);
+  }
+
+  setKey(key: string): void {
     localStorage.setItem(this.DB_STORAGE_KEY, key);
   }
 

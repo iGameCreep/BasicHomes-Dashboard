@@ -16,12 +16,12 @@ export class DatabaseService {
     constructor(private http: HttpClient,
                 private dbService: DbService) { }
                 
-    headers = {
-        db: this.dbService.getKey()
+    getHeaders(): any {
+        return { db: this.dbService.getKey() }
     }
 
     getAllHomes(): Observable<Home[]> {
-        return this.http.get<Home[]>(`${this.api_endpoint}/homes`, {headers: this.headers}).pipe(
+        return this.http.get<Home[]>(`${this.api_endpoint}/homes`, {headers: this.getHeaders()}).pipe(
             map(response => {
                 return response.map(data => {
                     const home = new Home();
@@ -58,41 +58,40 @@ export class DatabaseService {
     }
 
     deleteHomeById(homeId: number): void {
-        this.http.get(`${this.api_endpoint}/home/${homeId}/delete`, {headers: this.headers}).subscribe((result) => {return});
+        this.http.get(`${this.api_endpoint}/home/${homeId}/delete`, {headers: this.getHeaders()}).subscribe((result) => {return});
     }
 
     getAccountInfoById(accountId: number): Observable<UserInformations> {
-        return this.http.get<UserInformations>(`${this.api_endpoint}/account/${accountId}`, {headers: this.headers});
+        return this.http.get<UserInformations>(`${this.api_endpoint}/account/${accountId}`, {headers: this.getHeaders()});
     }
 
     login(userId: number, password: string): Observable<LoginResponse> {
-        console.log(this.api_endpoint)
         const body = {
             accountId: userId,
             password: password
         }
-        return this.http.post<LoginResponse>(`${this.api_endpoint}/api/login`, body, {headers: this.headers});
+        return this.http.post<LoginResponse>(`${this.api_endpoint}/api/login`, body, {headers: this.getHeaders()});
     }
 
     getSessionInfoFromSession(session: string): Observable<SessionInformationsResponse> {
         const body = {
             sessionId: session
         }
-        return this.http.post<SessionInformationsResponse>(`${this.api_endpoint}/api/session`, body, {headers: this.headers});
+        return this.http.post<SessionInformationsResponse>(`${this.api_endpoint}/api/session`, body, {headers: this.getHeaders()});
     }
 
     destroySession(session: string): Observable<SessionDestroy> {
         const body = {
             sessionId: session
         }
-        return this.http.post<SessionDestroy>(`${this.api_endpoint}/api/session/destroy`, body, {headers: this.headers});
+        return this.http.post<SessionDestroy>(`${this.api_endpoint}/api/session/destroy`, body, {headers: this.getHeaders()});
     }
 
     deleteAccount(accountId: number): void {
         const body = {
             accountId: accountId
         }   
-        this.http.post<void>(`${this.api_endpoint}/account/delete`, body, {headers: this.headers}).subscribe((result) => {return});
+        this.http.post<void>(`${this.api_endpoint}/account/delete`, body, {headers: this.getHeaders()}).subscribe((result) => {return});
     }
 
     changeAccountPassword(accountId: number, password: string): void {
@@ -100,6 +99,6 @@ export class DatabaseService {
             accountId: accountId,
             password: password
         }
-        this.http.post<void>(`${this.api_endpoint}/account/password`, body, {headers: this.headers}).subscribe((result) => {return});
+        this.http.post<void>(`${this.api_endpoint}/account/password`, body, {headers: this.getHeaders()}).subscribe((result) => {return});
     }
 }
