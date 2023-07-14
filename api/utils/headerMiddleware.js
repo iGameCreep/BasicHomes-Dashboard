@@ -3,7 +3,8 @@ const { defaultDb, getDbFromHash } = require('../db');
 const checkHeaderMiddleware = (req, res, next) => {
   const header = req.headers['db'];
   if (header === 'default') {
-    req.pool
+    req.pool = defaultDb;
+    return next();
   }
   if (header) {
     processDb(header, (error, result) => {
