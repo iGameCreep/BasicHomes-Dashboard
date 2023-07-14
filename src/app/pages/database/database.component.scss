@@ -1,0 +1,30 @@
+div {
+  margin-bottom: 10px;
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input {
+    display: block;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 99%;
+  }
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #0069d9;
+  }
+}

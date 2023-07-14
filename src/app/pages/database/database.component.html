@@ -1,0 +1,23 @@
+<h1>Get your dashboard working url !</h1>
+
+<div>
+    <label>Database Host:</label>
+    <input [(ngModel)]="db_host" name="db_host"/>
+</div>
+<div>
+    <label>Database Name:</label>
+    <input [(ngModel)]="db_name" name="db_name"/>
+</div>
+<div>
+    <label>Database Username:</label>
+    <input [(ngModel)]="db_user" name="db_user"/>
+</div>
+<div>
+    <label>Database Password:</label>
+    <input [(ngModel)]="db_password" name="db_password" type="password"/>
+</div>
+<button (click)="generate()">Generate URL</button>
+<br><br>
+<div *ngIf="result">
+   Your dashboard URL: <a href="{{result}}">{{result}}</a>
+</div>

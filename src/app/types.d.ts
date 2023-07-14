@@ -15,16 +15,9 @@ export interface SessionDestroy {
 export interface UserInformations {
     accountID: number;
     userID: string;
-    servers: UserServer[];
     username?: string;
-}
-
-export interface UserServer {
-    serverID: string;
-    serverName: string;
     rank: 'admin' | 'user';
 }
-
 export interface AccountInfoAvailable {
     available: boolean;
     userInfos?: UserInformations;

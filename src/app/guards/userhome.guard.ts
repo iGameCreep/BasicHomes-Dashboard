@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { SessionService } from '../services/session.service';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
@@ -12,18 +12,15 @@ export class UserHomeGuard implements CanActivate {
                 private databaseService: DatabaseService) {}
 
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-        const serverId = route.params['serverId'];
         const homeId = route.params['homeId'];
         return this.sessionService.getUserId().pipe(
             switchMap((id) => {
                 return this.databaseService.getAccountInfoById(id).pipe(
                     switchMap((infos) => {
-                        const server = infos.servers.find(s => s.serverID === serverId);
-                        if (!server) return of(false);
-                        if (server.rank === "admin") {
+                        if (infos.rank === "admin") {
                             return of(true);
                         } else {
-                            return this.databaseService.getServerHomeById(serverId, homeId).pipe(
+                            return this.databaseService.getServerHomeById(homeId).pipe(
                                 map((homeData) => {
                                     return homeData.uuid === infos.userID;
                                 })

@@ -1,6 +1,6 @@
 <div class="navbar">
     <a routerLink="/" [ngClass]="{'active': isActive('/')}">Home</a>
-    <a routerLink="/servers" *ngIf="isLoggedIn()" [ngClass]="{'active': (isActive('/servers') || isAppActive('/home'))}">Servers</a>
+    <a routerLink="/homes/{{userId}}" *ngIf="isLoggedIn()" [ngClass]="{'active': (isAppActive('/home'))}">Homes</a>
     <a routerLink="/login" *ngIf="!isLoggedIn()" [ngClass]="{'active': isActive('/login')}" style="float: right">Login</a>
     <a routerLink="{{getCurrentURL()}}" *ngIf="isLoggedIn()" (click)="logout()" style="float: right">Logout</a>
     <a routerLink="account" *ngIf="isLoggedIn()" [ngClass]="{'active': isActive('/account')}" style="float: right">My Account</a>

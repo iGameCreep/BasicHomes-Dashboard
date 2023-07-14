@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DatabaseService } from 'src/app/services/database.service';
+import { DbService } from 'src/app/services/db.service';
+import { MojangService } from 'src/app/services/mojang.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UserInformations } from 'src/app/types';
 
@@ -12,27 +15,46 @@ export class LandingComponent implements OnInit {
   loadingComplete: boolean = false;
   loggedIn!: boolean;
   userInfos!: UserInformations;
+  homeCount!: number;
 
-  constructor(private sessionService: SessionService,
-              private router: Router) {}
+  constructor(private router: Router,
+              private sessionService: SessionService,
+              private activatedRoute: ActivatedRoute,
+              private databaseService: DatabaseService,
+              private mojangService: MojangService,
+              private dbService: DbService) {}
 
-  adminOnServers(): number {
-    return this.userInfos.servers.filter(s => s.rank === "admin").length;
+  isAdmin(): boolean {
+    return this.userInfos.rank === 'admin';
   }
 
-  serversRedirect(): void {
-    this.router.navigateByUrl(`/servers`);
+  userHomesByUUID(): void {
+    const userId = window.prompt("User UUID:");
+    if (userId === null) return;
+    this.router.navigateByUrl(`/homes/${userId}`);
   }
 
-  ngOnInit(): void {
-    this.sessionService.getAccountInfoIfAvailable().subscribe(
-      (result) => {
-        this.loggedIn = result.available;
-        if (result.available) {
-          if (result.userInfos) this.userInfos = result.userInfos;
-          this.loadingComplete = true;
-        }
+  userHomesByUsername(): void {
+    const username = window.prompt("Username:");
+    if (username === null) return;
+    this.mojangService.getUUIDByUsername(username).subscribe((uuid) => {
+        this.router.navigateByUrl(`/homes/${uuid}`);
       }
     )
+  }
+  
+  ngOnInit(): void {
+    const db = decodeURIComponent(this.activatedRoute.snapshot.queryParams['db']);
+    this.dbService.load(db);
+
+    this.sessionService.getAccountInfoIfAvailable().subscribe((result) => { 
+      this.loggedIn = result.available; 
+      if (result.available) { 
+        if (result.userInfos) {
+          this.userInfos = result.userInfos; this.loadingComplete = true;
+          this.databaseService.getAllPlayerHomes(result.userInfos.userID).subscribe((homes) => this.homeCount = homes.length)
+        }        
+      }
+    })
   }
 }

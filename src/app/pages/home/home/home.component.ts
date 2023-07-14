@@ -16,9 +16,8 @@ export class HomeComponent implements OnInit {
   home: Home = new Home();
 
   ngOnInit(): void {
-     const serverId = this.route.snapshot.params['serverId'].replaceAll('-', '');
      const homeId = this.route.snapshot.params['homeId'];
-     this.databaseService.getServerHomeById(serverId, homeId).subscribe(home => {
+     this.databaseService.getServerHomeById(homeId).subscribe(home => {
       if (home) this.home = home;
      })
   }

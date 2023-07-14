@@ -1,5 +1,6 @@
 <div *ngIf="!loggedIn">
     <h1>Welcome to BasicHomes ! Login to start managing your homes</h1>
+    <h3>Need to generate a link for your dashboard ? Add it <a routerLink="db">here</a> !</h3>
 </div>
 <div *ngIf="loggedIn">
     <h1>Welcome to BasicHomes !</h1>
@@ -14,13 +15,15 @@
             <p><strong>Minecraft UUID:</strong> {{ userInfos.userID }}</p>
             <br>
         </div>
-        <h1>Your stats</h1>
-            <div class="card">
-                <h1>Server Stats</h1>
-                <p><strong>Servers:</strong> {{ userInfos.servers.length }}</p>
-                <p><strong>Admin On Servers:</strong> {{ adminOnServers() }}</p>
-                <br>
-                <button (click)="serversRedirect()">Manage My Servers</button>
-            </div>
+        <div class="card">
+            <h1>Your Stats</h1>
+            <p><strong>Homes:</strong> {{ homeCount }}</p>
+            <p><strong>Rank:</strong> {{ userInfos.rank | titlecase }}</p>
+            <br>
+            <button routerLink="homes/{{userInfos.userID}}">Manage My Homes</button>
+            <button routerLink="homes" *ngIf="isAdmin()">Manage My Server Homes</button>
+            <button (click)="userHomesByUsername()" *ngIf="isAdmin()">Player Homes (Username)</button>
+            <button (click)="userHomesByUUID()" *ngIf="isAdmin()">Player Homes (UUID)</button>
+        </div>
     </div>
 </div>

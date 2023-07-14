@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { SessionService } from '../services/session.service';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
@@ -17,13 +17,11 @@ export class UserGuard implements CanActivate {
       switchMap((id) => {
         return this.databaseService.getAccountInfoById(id).pipe(
           map((infos) => {
-            const server = infos.servers.find(s => s.serverID === route.params['serverId']);
-            if (!server) return of(false);
-            if (server.rank === "admin") {
-              return of(true);
+            if (infos.rank === "admin") {
+              return true;
             } else {
               const userId = route.params['userId'];
-              return infos.userID = userId;
+              return infos.userID === userId;
             }
           })
         );

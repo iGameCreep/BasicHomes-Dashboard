@@ -20,14 +20,6 @@ export class AccountComponent {
               private messageService: MessageService,
               private router: Router) {}
 
-  adminOnServers(): number {
-    return this.userInfos.servers.filter(s => s.rank === "admin").length;
-  }
-
-  serversRedirect(): void {
-    this.router.navigateByUrl(`/servers`);
-  }
-
   deleteAccount(): void {
     if (confirm("Are you sure you want to delete your account?")) {
       this.sessionService.logout();
