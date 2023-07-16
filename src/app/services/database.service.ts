@@ -101,4 +101,8 @@ export class DatabaseService {
         }
         this.http.post<void>(`${this.api_endpoint}/account/password`, body, {headers: this.getHeaders()}).subscribe((result) => {return});
     }
+
+    testDatabase(db: string): Observable<any> {
+        return this.http.post<any>(`${this.api_endpoint}/db`, {}, {headers: { db: db }})
+    }
 }
