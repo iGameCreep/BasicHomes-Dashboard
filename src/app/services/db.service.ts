@@ -10,7 +10,6 @@ export class DbService {
 
   load(key: string): void {
     if (this.isRegistered()) return;
-    console.log(key === 'undefined')
     if (key === 'undefined') this.setKey('default');
     else this.setKey(key);
   }
