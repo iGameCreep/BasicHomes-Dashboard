@@ -65,6 +65,14 @@ export class DatabaseService {
         return this.http.get<UserInformations>(`${this.api_endpoint}/account/${accountId}`, {headers: this.getHeaders()});
     }
 
+    getAllAccounts(): Observable<UserInformations[]> {
+        return this.http.get<UserInformations[]>(`${this.api_endpoint}/accounts`, {headers: this.getHeaders()});
+    }
+
+    changeAccountRank(accountId: number): void {
+        this.http.post<void>(`${this.api_endpoint}/account/${accountId}/rank`, {}, {headers: this.getHeaders()}).subscribe((result) => {return});
+    }
+
     login(userId: number, password: string): Observable<LoginResponse> {
         const body = {
             accountId: userId,
