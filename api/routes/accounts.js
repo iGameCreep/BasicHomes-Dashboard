@@ -3,23 +3,57 @@ const router = express.Router();
 const { hashPassword } = require('../utils/utils');
 const headerMiddleware = require('../utils/headerMiddleware');
 
-router.get('/account/:accountId', headerMiddleware, async (req, res) => {
-    const accountId = req.params.accountId;
-    const query = `SELECT * FROM accounts WHERE accountID = ${accountId}`;
+async function getAccountById(id, pool) {
+    const query = `SELECT * FROM accounts WHERE accountID = ${id}`;
     try {
-      const result = await req.pool.query(query);
+      const result = await pool.query(query);
   
       if (result.rows.length === 0) {
-        res.status(404).json({ error: 'User not found' });
-        return;
+        throw new Error('User not found');
       }
   
-      const user = result.rows[0];
-  
+      return result.rows[0];
+    } catch (error) {
+      throw new Error('Error getting user:', error);
+    }
+}
+
+router.get('/account/:accountId', headerMiddleware, async (req, res) => {
+    const accountId = req.params.accountId;
+    try {
+      const user = await getAccountById(accountId, req.pool);
+
       res.json({ accountID: accountId, userID: user.userid, rank: user.rank });
     } catch (error) {
       console.error('Error getting user:', error);
       res.status(500).json({ error: 'Internal server error' });
+    }
+    req.pool.end();
+});
+
+router.post('/account/:accountId/rank', headerMiddleware, async (req, res) => {
+    const accountId = req.params.accountId;
+    try {
+      const user = await getAccountById(accountId, req.pool);
+
+      await req.pool.query(`UPDATE accounts SET rank = '${user.rank === 'admin' ? 'user' : 'admin'}' WHERE accountid = ${accountId}`);
+
+      res.sendStatus(200);
+    } catch (error) {
+      console.error('Error getting user:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+    req.pool.end();
+});
+
+router.get('/accounts', headerMiddleware, async (req, res) => {
+    const query = `SELECT * FROM accounts`;
+    try {
+        const result = await req.pool.query(query);
+        res.json(result.rows.map(({ accountid, userid, rank }) => ({ accountID: accountid, userID: userid, rank })));
+    } catch (error) {
+        console.error('Error getting accounts:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
     req.pool.end();
 });
