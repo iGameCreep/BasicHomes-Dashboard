@@ -1,0 +1,16 @@
+<h1 *ngIf="!loadingComplete">Loading...</h1>
+<div *ngIf="loadingComplete">
+    <br>
+    <h1>Note: when an in-game OP user creates an account, he will automatically be ranked to admin.</h1>
+    <br>
+    <div class="card clearfix" *ngFor="let account of accounts">
+        <h1>{{ account.username }}</h1>
+        <p><strong>Player Name: </strong>{{ account.username }}</p>
+        <p><strong>Player UUID: </strong>{{ account.userID }}</p>
+        <p><strong>Dashboard Rank: </strong>{{ account.rank }}</p>
+        <p><strong>Account ID: </strong>{{ account.accountID }}</p>
+        <br>
+        <a (click)="changeRank(account.accountID)" style="float: left;">Rank to {{ account.rank === 'admin' ? 'User' : 'Admin' }}</a>
+        <a (click)="showConfirmation(account.accountID)" class="right" style="background-color: crimson;">Delete Account</a>
+    </div>
+</div>

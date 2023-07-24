@@ -11,6 +11,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { UserHomeGuard } from './guards/userhome.guard';
 import { AccountComponent } from './pages/account/account.component';
 import { DatabaseComponent } from './pages/database/database.component';
+import { AccountsComponent } from './pages/accounts/accounts.component';
 
 const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'homes', component: ServerHomeListComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'homes/:userId', component: PlayerHomeListComponent, canActivate: [AuthGuard, UserGuard] },
   { path: 'home/:homeId', component: HomeComponent, canActivate: [AuthGuard, UserHomeGuard] },
+  { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'db', component: DatabaseComponent },
   { path: '**', redirectTo: '' }
 ];

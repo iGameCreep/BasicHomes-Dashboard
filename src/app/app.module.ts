@@ -16,6 +16,7 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { MessageBarComponent } from './components/message-bar/message-bar.component';
 import { AccountComponent } from './pages/account/account.component';
 import { DatabaseComponent } from './pages/database/database.component';
+import { AccountsComponent } from './pages/accounts/accounts.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { DatabaseComponent } from './pages/database/database.component';
     MessageBarComponent,
     AccountComponent,
     DatabaseComponent,
+    AccountsComponent,
   ],
   imports: [
     BrowserModule,
