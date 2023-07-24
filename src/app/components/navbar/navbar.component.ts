@@ -14,10 +14,14 @@ export class NavbarComponent implements OnInit {
               private messageService: MessageService) { }
 
   userId!: string;
+  isAdmin!: boolean;
 
   ngOnInit(): void {
     this.sessionService.getAccountInfoIfAvailable().subscribe((data) => {
-      if (data.available && data.userInfos) this.userId = data.userInfos?.userID;
+      if (data.available && data.userInfos) {
+        this.userId = data.userInfos.userID;
+        this.isAdmin = data.userInfos.rank === 'admin';
+      }
     });
   }
 
