@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AES, enc } from 'crypto-js';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,28 +9,35 @@ export class DbService {
   private readonly DB_STORAGE_KEY = 'db';
   private readonly KEY: string = 'BasicHomes';
 
+  constructor(private storageService: StorageService) { }
+
   load(key: string): void {
-    if (this.isRegistered()) return;
-    if (key === 'undefined') this.setKey('default');
-    else this.setKey(key);
+    if (key !== 'undefined') this.setDb(key);
+    else {
+      if (this.isRegistered()) {
+        if (this.getDb() !== 'default') return;
+        else this.setDb('default');
+      }
+      else this.setDb('default');
+    }
   }
 
-  setKey(key: string): void {
-    localStorage.setItem(this.DB_STORAGE_KEY, key);
+  setDb(value: string): void {
+    this.storageService.setStorageKey(this.DB_STORAGE_KEY, value);
   }
 
-  getKey(): string {
-    const key = localStorage.getItem(this.DB_STORAGE_KEY);
-    if (!key) throw new Error("No DB registered")
+  getDb(): string {
+    const key = this.storageService.getStorageKey(this.DB_STORAGE_KEY);
+    if (!key) throw new Error("No DB registered");
     return key;
   }
 
   isRegistered(): boolean {
-    return !!localStorage.getItem(this.DB_STORAGE_KEY);
+    return !!this.storageService.getStorageKey(this.DB_STORAGE_KEY);
   }
 
   logout(): void {
-    localStorage.removeItem(this.DB_STORAGE_KEY);
+    this.storageService.clearStorageKey(this.DB_STORAGE_KEY);
   }
 
   encryptObject(object: any): string {

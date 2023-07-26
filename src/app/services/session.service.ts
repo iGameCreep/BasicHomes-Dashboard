@@ -3,6 +3,7 @@ import { APIService } from './api.service';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { AccountInfoAvailable, LoginResponse, SessionDestroy, UserInformations } from '../types';
 import { MojangService } from './mojang.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,41 +12,35 @@ export class SessionService {
   private readonly SESSION_STORAGE_KEY = 'session';
 
   constructor(private apiService: APIService,
+              private storageService: StorageService,
               private mojangService: MojangService) {}
 
-  login(loginResponse: LoginResponse): void {
-    if (loginResponse && loginResponse.success) {
-      localStorage.setItem(this.SESSION_STORAGE_KEY, JSON.stringify({ id: loginResponse.sessionID }));
-    }
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.SESSION_STORAGE_KEY);
-  }
-
-  getSessionId(): string {
-    const session = localStorage.getItem(this.SESSION_STORAGE_KEY);
-    if (!session) throw new Error('Session not found');
-    const storedObject = JSON.parse(session);
-    return storedObject.id;
-  }
-
   getUserId(): Observable<number> {
-    return this.apiService.getSessionInfoFromSession(this.getSessionId()).pipe(
+    return this.apiService.getSessionInfoFromSession(this.storageService.getStorageKey(this.SESSION_STORAGE_KEY)).pipe(
       map((result) => result.accountID)
     );
   }
 
+  isLoggedIn(): boolean {
+    return !!this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+  }
+
   isSessionAvailable(): Observable<boolean> {
-    if (!this.isLoggedIn()) return of(false);
-    return this.apiService.getSessionInfoFromSession(this.getSessionId()).pipe(
+    if (this.isLoggedIn()) return of(false);
+    return this.apiService.getSessionInfoFromSession(this.storageService.getStorageKey(this.SESSION_STORAGE_KEY)).pipe(
       map((result) => result.available)
     )
   }
 
+  login(loginResponse: LoginResponse): void {
+    if (loginResponse && loginResponse.success) {
+      this.storageService.setStorageKey(this.SESSION_STORAGE_KEY, loginResponse.sessionID);
+    }
+  }
+
   logout(): Observable<SessionDestroy> {
-    const sessionId = this.getSessionId();
-    localStorage.removeItem(this.SESSION_STORAGE_KEY);
+    const sessionId = this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+    this.storageService.clearStorageKey(this.SESSION_STORAGE_KEY);
     return this.apiService.destroySession(sessionId);
   }
 

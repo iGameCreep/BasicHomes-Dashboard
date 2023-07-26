@@ -17,7 +17,7 @@ export class APIService {
                 private dbService: DbService) { }
                 
     getHeaders(): any {
-        return { db: this.dbService.getKey() }
+        return { db: this.dbService.getDb() }
     }
 
     getAllHomes(): Observable<Home[]> {
