@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { SessionService } from '../services/session.service';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { DatabaseService } from '../services/database.service';
+import { APIService } from '../services/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +10,12 @@ import { DatabaseService } from '../services/database.service';
 export class UserGuard implements CanActivate {
 
   constructor(private sessionService: SessionService,
-              private databaseService: DatabaseService) {}
+              private apiService: APIService) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     return this.sessionService.getUserId().pipe(
       switchMap((id) => {
-        return this.databaseService.getAccountInfoById(id).pipe(
+        return this.apiService.getAccountInfoById(id).pipe(
           map((infos) => {
             if (infos.rank === "admin") {
               return true;

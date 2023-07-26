@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Home } from 'src/app/models/home.model';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +10,14 @@ import { DatabaseService } from 'src/app/services/database.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private databaseService: DatabaseService,
+  constructor(private apiService: APIService,
               private route: ActivatedRoute) {}
 
   home: Home = new Home();
 
   ngOnInit(): void {
      const homeId = this.route.snapshot.params['homeId'];
-     this.databaseService.getServerHomeById(homeId).subscribe(home => {
+     this.apiService.getServerHomeById(homeId).subscribe(home => {
       if (home) this.home = home;
      })
   }

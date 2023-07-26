@@ -10,7 +10,7 @@ import { DbService } from "./db.service";
 @Injectable({
     providedIn: 'root'
 })
-export class DatabaseService {
+export class APIService {
     api_endpoint: string = environment.API_DOMAIN + ':' + environment.API_PORT;
 
     constructor(private http: HttpClient,

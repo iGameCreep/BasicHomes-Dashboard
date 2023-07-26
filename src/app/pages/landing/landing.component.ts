@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
 import { MojangService } from 'src/app/services/mojang.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -20,7 +20,7 @@ export class LandingComponent implements OnInit {
   constructor(private router: Router,
               private sessionService: SessionService,
               private activatedRoute: ActivatedRoute,
-              private databaseService: DatabaseService,
+              private apiService: APIService,
               private mojangService: MojangService,
               private dbService: DbService) {}
 
@@ -52,7 +52,7 @@ export class LandingComponent implements OnInit {
       if (result.available) { 
         if (result.userInfos) {
           this.userInfos = result.userInfos; this.loadingComplete = true;
-          this.databaseService.getAllPlayerHomes(result.userInfos.userID).subscribe((homes) => this.homeCount = homes.length)
+          this.apiService.getAllPlayerHomes(result.userInfos.userID).subscribe((homes) => this.homeCount = homes.length)
         }        
       }
     })

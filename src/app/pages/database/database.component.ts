@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
 import { MessageService } from 'src/app/services/message.service';
 
@@ -17,7 +17,7 @@ export class DatabaseComponent {
   result!: string;
 
   constructor(private dbService: DbService,
-              private databaseService: DatabaseService,
+              private apiService: APIService,
               private messageService: MessageService) { }
 
   generate(): void {
@@ -28,7 +28,7 @@ export class DatabaseComponent {
       password: this.db_password,
     }
     const encryptedData = this.dbService.encryptObject(db);
-    this.databaseService.testDatabase(encryptedData).subscribe((result) => {
+    this.apiService.testDatabase(encryptedData).subscribe((result) => {
       if (result.success) {
         const generatedUrl = encodeURIComponent(encryptedData);
         this.result = `https://basichomes.netlify.app?db=${generatedUrl}`;

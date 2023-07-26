@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DatabaseService } from './database.service';
+import { APIService } from './api.service';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { AccountInfoAvailable, LoginResponse, SessionDestroy, UserInformations } from '../types';
 import { MojangService } from './mojang.service';
@@ -10,7 +10,7 @@ import { MojangService } from './mojang.service';
 export class SessionService {
   private readonly SESSION_STORAGE_KEY = 'session';
 
-  constructor(private databaseService: DatabaseService,
+  constructor(private apiService: APIService,
               private mojangService: MojangService) {}
 
   login(loginResponse: LoginResponse): void {
@@ -31,14 +31,14 @@ export class SessionService {
   }
 
   getUserId(): Observable<number> {
-    return this.databaseService.getSessionInfoFromSession(this.getSessionId()).pipe(
+    return this.apiService.getSessionInfoFromSession(this.getSessionId()).pipe(
       map((result) => result.accountID)
     );
   }
 
   isSessionAvailable(): Observable<boolean> {
     if (!this.isLoggedIn()) return of(false);
-    return this.databaseService.getSessionInfoFromSession(this.getSessionId()).pipe(
+    return this.apiService.getSessionInfoFromSession(this.getSessionId()).pipe(
       map((result) => result.available)
     )
   }
@@ -46,7 +46,7 @@ export class SessionService {
   logout(): Observable<SessionDestroy> {
     const sessionId = this.getSessionId();
     localStorage.removeItem(this.SESSION_STORAGE_KEY);
-    return this.databaseService.destroySession(sessionId);
+    return this.apiService.destroySession(sessionId);
   }
 
   getAccountInfoIfAvailable(): Observable<AccountInfoAvailable> {
@@ -60,7 +60,7 @@ export class SessionService {
         if (available) {
           return this.getUserId().pipe(
             switchMap((accId) => {
-              return this.databaseService.getAccountInfoById(accId).pipe(
+              return this.apiService.getAccountInfoById(accId).pipe(
                 switchMap((infos) => {
                   return this.mojangService.getUsernameByUUID(infos.userID).pipe(
                     map((username) => {
