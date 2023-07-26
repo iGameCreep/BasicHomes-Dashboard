@@ -5,7 +5,7 @@ import { StorageService } from './storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DbService {
+export class DatabaseService {
   private readonly DB_STORAGE_KEY = 'db';
   private readonly KEY: string = 'BasicHomes';
 

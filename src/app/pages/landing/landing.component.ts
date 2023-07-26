@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from 'src/app/services/api.service';
-import { DbService } from 'src/app/services/db.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { MojangService } from 'src/app/services/mojang.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UserInformations } from 'src/app/types';
@@ -22,7 +22,7 @@ export class LandingComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private apiService: APIService,
               private mojangService: MojangService,
-              private dbService: DbService) {}
+              private databaseService: DatabaseService) {}
 
   isAdmin(): boolean {
     return this.userInfos.rank === 'admin';
@@ -45,7 +45,7 @@ export class LandingComponent implements OnInit {
   
   ngOnInit(): void {
     const db = decodeURIComponent(this.activatedRoute.snapshot.queryParams['db']);
-    this.dbService.load(db);
+    this.databaseService.load(db);
 
     this.sessionService.getAccountInfoIfAvailable().subscribe((result) => { 
       this.loggedIn = result.available; 

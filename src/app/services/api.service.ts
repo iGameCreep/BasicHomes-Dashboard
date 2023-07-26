@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { map } from 'rxjs/operators';
 import { LoginResponse, SessionDestroy, SessionInformationsResponse, UserInformations } from '../types';
 import { environment } from '../../environments/environment';
-import { DbService } from "./db.service";
+import { DatabaseService } from "./database.service";
 
 @Injectable({
     providedIn: 'root'
@@ -14,10 +14,10 @@ export class APIService {
     api_endpoint: string = environment.API_DOMAIN + ':' + environment.API_PORT;
 
     constructor(private http: HttpClient,
-                private dbService: DbService) { }
+                private databaseService: DatabaseService) { }
                 
     getHeaders(): any {
-        return { db: this.dbService.getDb() }
+        return { db: this.databaseService.getDb() }
     }
 
     getAllHomes(): Observable<Home[]> {

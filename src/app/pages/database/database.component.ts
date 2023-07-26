@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { APIService } from 'src/app/services/api.service';
-import { DbService } from 'src/app/services/db.service';
+import { DatabaseService } from 'src/app/services/database.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class DatabaseComponent {
 
   result!: string;
 
-  constructor(private dbService: DbService,
+  constructor(private databaseService: DatabaseService,
               private apiService: APIService,
               private messageService: MessageService) { }
 
@@ -27,7 +27,7 @@ export class DatabaseComponent {
       database: this.db_name,
       password: this.db_password,
     }
-    const encryptedData = this.dbService.encryptObject(db);
+    const encryptedData = this.databaseService.encryptObject(db);
     this.apiService.testDatabase(encryptedData).subscribe((result) => {
       if (result.success) {
         const generatedUrl = encodeURIComponent(encryptedData);
