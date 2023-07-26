@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { LoginResponse } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -7,9 +6,8 @@ import { LoginResponse } from '../types';
 export class StorageService {
   constructor() { }
 
-  getStorageKey(key: string): string {
+  getStorageKey(key: string): string | null {
     const value = localStorage.getItem(key);
-    if (!value) throw new Error('Key not found');
     return value;
   }
 

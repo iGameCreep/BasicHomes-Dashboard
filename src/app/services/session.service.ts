@@ -16,18 +16,21 @@ export class SessionService {
               private mojangService: MojangService) {}
 
   getUserId(): Observable<number> {
-    return this.apiService.getSessionInfoFromSession(this.storageService.getStorageKey(this.SESSION_STORAGE_KEY)).pipe(
+    const session = this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+    if (!session) throw new Error('Not logged in');
+    return this.apiService.getSessionInfoFromSession(session).pipe(
       map((result) => result.accountID)
     );
   }
 
   isLoggedIn(): boolean {
-    return !!this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+    return this.storageService.getStorageKey(this.SESSION_STORAGE_KEY) !== null;
   }
 
   isSessionAvailable(): Observable<boolean> {
-    if (this.isLoggedIn()) return of(false);
-    return this.apiService.getSessionInfoFromSession(this.storageService.getStorageKey(this.SESSION_STORAGE_KEY)).pipe(
+    const session = this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+    if (!session) return of(false);
+    return this.apiService.getSessionInfoFromSession(session).pipe(
       map((result) => result.available)
     )
   }
@@ -39,9 +42,10 @@ export class SessionService {
   }
 
   logout(): Observable<SessionDestroy> {
-    const sessionId = this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+    const session = this.storageService.getStorageKey(this.SESSION_STORAGE_KEY);
+    if (!session) throw new Error('Not logged in');
     this.storageService.clearStorageKey(this.SESSION_STORAGE_KEY);
-    return this.apiService.destroySession(sessionId);
+    return this.apiService.destroySession(session);
   }
 
   getAccountInfoIfAvailable(): Observable<AccountInfoAvailable> {
