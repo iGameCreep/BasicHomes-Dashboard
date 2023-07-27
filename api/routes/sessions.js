@@ -61,7 +61,7 @@ router.post('/api/session', headerMiddleware, (req, res) => {
   req.pool.end();
 });
 
-router.post('/api/session/destroy', (req, res) => {
+router.post('/api/session/destroy', headerMiddleware, (req, res) => {
   const sessionId = req.body.sessionId;
 
   if (!sessionId) {

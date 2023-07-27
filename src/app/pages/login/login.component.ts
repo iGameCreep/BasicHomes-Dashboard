@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
 import { SessionService } from 'src/app/services/session.service';
 
@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   accountId!: number;
   password!: string;
   
-  constructor(private databaseService: DatabaseService,
+  constructor(private apiService: APIService,
               private sessionService: SessionService,
               private messageService: MessageService,
               private router: Router) {}
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.databaseService.login(this.accountId, this.password)
+    this.apiService.login(this.accountId, this.password)
     .subscribe({
       next: (result) => {
         if (!result.success) {

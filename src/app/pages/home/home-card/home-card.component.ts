@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Home } from 'src/app/models/home.model';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
 import { MojangService } from 'src/app/services/mojang.service';
 
@@ -14,7 +14,7 @@ export class HomeCardComponent implements OnInit {
   @Input() home!: Home;
 
   constructor(private mojangService: MojangService,
-              private databaseService: DatabaseService,
+              private apiService: APIService,
               private messageService: MessageService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {}
@@ -27,7 +27,7 @@ export class HomeCardComponent implements OnInit {
 
   showConfirmation(homeId: number): void {
     if (confirm("Are you sure you want to proceed?")) {
-      this.databaseService.deleteHomeById(homeId);
+      this.apiService.deleteHomeById(homeId);
       this.messageService.setSuccessMessage('Successfully deleted home !', 2000);
       setTimeout(() => {
         this.router.navigateByUrl(`/homes`);

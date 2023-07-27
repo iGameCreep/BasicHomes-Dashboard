@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UserInformations } from 'src/app/types';
@@ -16,14 +16,14 @@ export class AccountComponent {
   userInfos!: UserInformations;
 
   constructor(private sessionService: SessionService,
-              private databaseService: DatabaseService,
+              private apiService: APIService,
               private messageService: MessageService,
               private router: Router) {}
 
   deleteAccount(): void {
     if (confirm("Are you sure you want to delete your account?")) {
       this.sessionService.logout();
-      this.databaseService.deleteAccount(this.userInfos.accountID);
+      this.apiService.deleteAccount(this.userInfos.accountID);
       this.router.navigateByUrl('');
       window.location.reload();
     }
@@ -39,7 +39,7 @@ export class AccountComponent {
     }
 
     if (regex.test(password)) {
-      this.databaseService.changeAccountPassword(this.userInfos.accountID, password);
+      this.apiService.changeAccountPassword(this.userInfos.accountID, password);
       this.messageService.setSuccessMessage("Successfully changed your password !");
     } else {
       this.messageService.setErrorMessage("Password must be 1 to 20 characters long and can only contain letters, digits and the following special characters: .,?!@#$%^&*()-+=<>:;\"'{}[]|\\/");

@@ -1,5 +1,5 @@
 <div class="navbar">
-    <a routerLink="/" [ngClass]="{'active': isActive('/')}">Home</a>
+    <a routerLink="/" [ngClass]="{'active': isActive('/') || isAppActive('/?db=')}">Home</a>
     <a routerLink="/homes/{{userId}}" *ngIf="isLoggedIn()" [ngClass]="{'active': (isAppActive('/home'))}">Homes</a>
     <a routerLink="/accounts" *ngIf="isAdmin" [ngClass]="{'active': (isAppActive('/accounts'))}">Accounts</a>
     <a routerLink="/login" *ngIf="!isLoggedIn()" [ngClass]="{'active': isActive('/login')}" style="float: right">Login</a>

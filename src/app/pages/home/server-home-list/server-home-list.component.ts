@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Home } from 'src/app/models/home.model';
-import { DatabaseService } from 'src/app/services/database.service';
+import { APIService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-server-home-list',
@@ -11,10 +10,10 @@ import { DatabaseService } from 'src/app/services/database.service';
 export class ServerHomeListComponent implements OnInit {
   homeList: Home[] = [];
 
-  constructor(private databaseService: DatabaseService) {}
+  constructor(private apiService: APIService) {}
 
   ngOnInit(): void {
-    this.databaseService.getAllHomes().subscribe((homes) => {
+    this.apiService.getAllHomes().subscribe((homes) => {
       this.homeList = homes;
     });
   }
