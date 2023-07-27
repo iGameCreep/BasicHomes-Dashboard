@@ -7,6 +7,15 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+function getSecretKey() {
+    return new Promise((resolve, reject) => {
+        console.log("-=-=-[ Secrets Config ]-=-=-")
+        rl.question("Secret encryption key: ", (key) => {
+            resolve(key)
+        });
+    });
+}
+
 function getWebConfig() {
     return new Promise((resolve, reject) => {
         console.log("-=-=-[ Website Config ]-=-=-")
@@ -58,7 +67,9 @@ API_DOMAIN=${config.api_domain}
 API_PORT=${config.api_port}
 
 WEBSITE_DOMAIN=${config.web_domain}
-WEBSITE_PORT=${config.web_port}`;
+WEBSITE_PORT=${config.web_port}
+
+SECRET_KEY=${config.key}`;
 
     fs.writeFileSync('.env', data);
 }
@@ -67,7 +78,8 @@ function writeTsEnvFile(config) {
     const data = 
 `export const environment = {
     API_DOMAIN: "${config.api_domain}",
-    API_PORT: ${config.api_port}
+    API_PORT: ${config.api_port},
+    SECRET_KEY: ${config.key}
 }`;
 
     fs.writeFileSync('src/environments/environment.ts', data);
@@ -76,6 +88,7 @@ function writeTsEnvFile(config) {
 async function askAndLoad() {
     const { web_domain, web_port } = await getWebConfig();
     const { api_domain, api_port } = await getApiConfig();
+    const { key } = await getSecretKey();
     const { db_host, db_name, db_user, db_password, db_port } = await getDatabaseConfig();
     rl.close();
 
@@ -90,7 +103,9 @@ async function askAndLoad() {
         db_name,
         db_user,
         db_password,
-        db_port
+        db_port,
+
+        key
     }
 
     writeEnvFile(config);
