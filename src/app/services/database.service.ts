@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AES, enc } from 'crypto-js';
 import { StorageService } from './storage.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
   private readonly DB_STORAGE_KEY = 'db';
-  private readonly KEY: string = 'BasicHomes';
+  private readonly KEY: string = environment.SECRET_KEY;
 
   constructor(private storageService: StorageService) { }
 
