@@ -1,3 +1,5 @@
+# PROJECT NOT MAINTAINED ANYMORE, HOMES OF BASICHOMES ARE NOW SAVED IN FILES INSTEAD OF DATABASE
+
 # BasicHomesPanel
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.5.
